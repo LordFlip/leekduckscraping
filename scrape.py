@@ -10,19 +10,28 @@ page = requests.get(url)
 data = page.text
 soup = BeautifulSoup(data, 'html.parser')
 
-h2 = soup.find_all('h2')
-event_item_wrapper = soup.find_all("event-item-wrapper")
 
-event_text = soup.find_all("event-text")
+event_texts = soup.find_all("event-text")
+event_text = soup.find("event-text")
 
-for i in event_text:
-    children = i.findChildren("p", recursive=True)
+#selector for the overall event tile
+event_item_link = soup.find_all("event-item-link")
 
-    for child in children:
-        item = child.text
-        print(item)
+print(event_item_link)
 
-print(soup.title.text)
+containers = soup.find_all("div", {"class" : "event-text"})
+counter = 1
 
-# for el in h2:
-#     print(el)
+for el in containers:
+	title = el.findChildren("h2", recursive=False)
+	date_time = el.findChildren("p", recursive=False)
+	print(f'{counter}: ')
+	for i in title:
+		print(i.text)
+		print(i.parent.name)
+	# print(title)
+	for i in date_time:
+		print(i.text)
+	# print(date_time)
+	counter +=1
+print('prop')
